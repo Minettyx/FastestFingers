@@ -25,7 +25,7 @@ app.use(darkmode)
 app.use(socket)
 
 const gAuthOptions = {
-  clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+  clientId: '460731705619-f1sf2c9mq0lhk0onoqt2hc4o8f22gn6t.apps.googleusercontent.com',
   scope: 'openid',
   prompt: 'consent',
   fetch_basic_profile: false

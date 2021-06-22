@@ -29,7 +29,7 @@ class MSocket {
   public logged: boolean | undefined = undefined
 
   constructor () {
-    this.socket = io(process.env.VUE_APP_API_URL + '', {
+    this.socket = io('https://ffws.0kb.eu' + '', {
       auth: {
         token: getCookie('STOKEN') + ''
       }
