@@ -6,6 +6,8 @@
     <input v-model="search" type="search" class="form-control" placeholder="Send">
   </form>
 
+  <button @click="signOut">LogOut</button>
+
 </div>
 </template>
 
@@ -28,6 +30,12 @@ export default defineComponent({
   methods: {
     sendMsg () {
       this.search = ''
+    },
+    async signOut () {
+      console.log('LOGOUT')
+      await this.$gAuth.signOut()
+      this.$eraseCookie('STOKEN')
+      window.location.href = '/login'
     }
   }
 })
