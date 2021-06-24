@@ -87,6 +87,6 @@ declare module '@vue/runtime-core' {
     $setCookie: (name: string, value: string, days: number | false) => void
     $getCookie: (name: string) => string | null
     $eraseCookie: (name: string) => void
-    $gAuth: any
+    $gAuth: any // eslint-disable-line
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Test</h1>
-    <button @click="$logIn()">signIn</button>
+    <button type="button" class="btn btn-primary" @click="$logIn()">LogIn</button>
   </div>
 </template>
 

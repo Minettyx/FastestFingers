@@ -51,4 +51,15 @@ class MSocket {
     this.socket.disconnect()
     this.constructor()
   }
+
+  public get<I, O> (path: string, data: I): Promise<O> {
+    return new Promise((resolve) => {
+      const uid = Math.random().toString(36).substr(2, 9)
+      this.socket.emit(path, { uid, data })
+      this.socket.on(uid, (res: O) => {
+        this.socket.off(uid)
+        resolve(res)
+      })
+    })
+  }
 }

@@ -1,12 +1,27 @@
 <template>
-<div>
-  <p v-for="msg in messages" :key="msg">{{ msg.username }}: {{ msg.message }}</p>
+<div class="container">
 
-  <form @submit.prevent="this.$socket.socket.send(search)&&sendMsg()">
-    <input v-model="search" type="search" class="form-control" placeholder="Send">
+  <br>
+  <div class="card">
+    <div class="card-body">
+      <p style="text-align: left" v-for="msg in messages" :key="msg">{{ msg.username }}: {{ msg.message }}</p>
+    </div>
+  </div>
+
+  <form @submit.prevent="this.$socket.socket.send(send)&&sendMsg()" class="form-inline">
+    <div class="row g-3 align-items-center">
+      <div class="col">
+        <input v-model="send" type="text" class="form-control " placeholder="Message">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+    </div>
   </form>
 
-  <button @click="$logOut()">LogOut</button>
+  <br>
+  <button type="button" class="btn btn-secondary" @click="$logOut()">LogOut</button>
+  <button type="button" class="btn btn-secondary" @click="darkmode = !darkmode">{{darkmode?'Light':'Dark'}} Theme</button>
 
 </div>
 </template>
@@ -19,7 +34,7 @@ export default defineComponent({
   data () {
     return {
       messages: [] as {username: string, message: string}[],
-      search: ''
+      send: ''
     }
   },
   mounted () {
@@ -29,7 +44,7 @@ export default defineComponent({
   },
   methods: {
     sendMsg () {
-      this.search = ''
+      this.send = ''
     }
   }
 })
