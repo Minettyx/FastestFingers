@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import { App, ref, Ref } from 'vue'
 import { io } from 'socket.io-client'
 
 export default {
@@ -26,7 +26,12 @@ declare module '@vue/runtime-core' {
 
 class MSocket {
   public socket
-  public logged: boolean | undefined = undefined
+  public logged: Ref<boolean | undefined> = ref(undefined)
+
+  private onSocketLoginExec?: (logged: boolean) => void
+  public onSocketLogin (exec: (logged: boolean) => void) {
+    this.onSocketLoginExec = exec
+  }
 
   constructor () {
     this.socket = io('https://ffws.0kb.eu' + '', {
@@ -36,12 +41,14 @@ class MSocket {
     })
 
     this.socket.on('logged', logged => {
-      this.logged = logged
-      if (!logged) {
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login'
-        }
-      }
+      this.logged.value = logged && true
+      this.onSocketLoginExec && this.onSocketLoginExec(logged && true)
     })
+  }
+
+  public reload () {
+    this.logged.value = undefined
+    this.socket.disconnect()
+    this.constructor()
   }
 }
