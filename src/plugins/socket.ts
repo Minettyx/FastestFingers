@@ -34,7 +34,7 @@ class MSocket {
   }
 
   constructor () {
-    this.socket = io('https://ffws.0kb.eu' + '', {
+    this.socket = io(process.env.VUE_APP_API_URL + '', {
       auth: {
         token: getCookie('STOKEN') + ''
       }
