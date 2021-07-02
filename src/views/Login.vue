@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Test</h1>
-    <button type="button" class="btn btn-primary" @click="$logIn()">LogIn</button>
+    <h1>{{$socket.loginError.value === 'AlreadyConnected' ? 'Already connected from another location' : 'Test'}}</h1>
+    <button type="button" class="btn btn-primary" @click="$logIn()" v-if="$socket.loginError.value === 'AuthenticationError'">LogIn</button>
   </div>
 </template>
 

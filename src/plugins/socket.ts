@@ -27,6 +27,7 @@ declare module '@vue/runtime-core' {
 class MSocket {
   public socket
   public logged: Ref<boolean | undefined> = ref(undefined)
+  public loginError: Ref<string | undefined> = ref(undefined)
 
   private onSocketLoginExec?: (logged: boolean) => void
   public onSocketLogin (exec: (logged: boolean) => void) {
@@ -40,8 +41,9 @@ class MSocket {
       }
     })
 
-    this.socket.on('logged', logged => {
-      this.logged.value = logged && true
+    this.socket.on('logged', (logged: {ok: boolean, error: string}) => {
+      this.logged.value = logged.ok && true
+      this.loginError.value = logged.error
       this.onSocketLoginExec && this.onSocketLoginExec(logged && true)
     })
   }
