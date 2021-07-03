@@ -1,5 +1,6 @@
 import { App, ref, Ref } from 'vue'
 import { io } from 'socket.io-client'
+import Game from './Game'
 
 export default {
   install: (app: App<Element>): void => {
@@ -28,6 +29,7 @@ class MSocket {
   public socket
   public logged: Ref<boolean | undefined> = ref(undefined)
   public loginError: Ref<string | undefined> = ref(undefined)
+  public game: Game
 
   private onSocketLoginExec?: (logged: boolean) => void
   public onSocketLogin (exec: (logged: boolean) => void) {
@@ -46,6 +48,8 @@ class MSocket {
       this.loginError.value = logged.error
       this.onSocketLoginExec && this.onSocketLoginExec(logged && true)
     })
+
+    this.game = new Game(this.socket)
   }
 
   public reload () {
@@ -63,5 +67,9 @@ class MSocket {
         resolve(res)
       })
     })
+  }
+
+  public autoJoin () {
+    return this.get<string, boolean>('game.autoJoin', '')
   }
 }

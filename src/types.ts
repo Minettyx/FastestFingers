@@ -7,7 +7,7 @@ export class ApiProfile {
   wins: number
   wk_points: number
 
-  constructor(data: {
+  constructor (data: {
     _id?: string
     email: string
     username: string
@@ -28,7 +28,7 @@ export class ApiPublicProfile {
   wins: number
   wk_points: number
 
-  constructor(data: {
+  constructor (data: {
     _id?: string
     username: string
     wins: number
@@ -46,7 +46,7 @@ export class ApiTopWinsUser {
   username: string
   wins: number
 
-  constructor(data: {
+  constructor (data: {
     _id?: string
     username: string
     wins: number
@@ -63,7 +63,7 @@ export class ApiTopWordSpeed {
   word: string
   speed: number
 
-  constructor(data: {
+  constructor (data: {
     username: string
     userid: string
     word: string
