@@ -2,7 +2,7 @@ import { Socket } from 'socket.io-client'
 import { Ref, ref } from 'vue'
 
 export default class Game {
-  public socket
+  private socket
   id: Ref<string> = ref('')
   users: Ref<{
     id: string

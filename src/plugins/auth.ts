@@ -5,8 +5,8 @@ export default {
     app.mixin({
       methods: {
         async $logIn () {
-          const googleUser = await this.$gAuth.signIn()
-          this.$setCookie('STOKEN', googleUser.getAuthResponse().id_token, 7)
+          const authCode = await this.$gAuth.getAuthCode()
+          this.$setCookie('STOKEN', authCode, 30)
           this.$socket.reload()
         },
         async $logOut () {

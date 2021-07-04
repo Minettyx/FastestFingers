@@ -1,10 +1,14 @@
 import { App, ref, Ref } from 'vue'
 import { io } from 'socket.io-client'
-import Game from './Game'
+import Game from '../api/Game'
+import Api from '@/api/Api'
 
 export default {
   install: (app: App<Element>): void => {
-    app.config.globalProperties.$socket = new MSocket()
+    const mmm = new MSocket()
+    app.config.globalProperties.$socket = mmm
+    app.config.globalProperties.$api = mmm.api
+    app.config.globalProperties.$game = mmm.game
   }
 }
 
@@ -22,17 +26,20 @@ function getCookie (name: string): string | null {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $socket: MSocket
+    $api: Api
+    $game: Game
   }
 }
 
-class MSocket {
+export class MSocket {
   public socket
   public logged: Ref<boolean | undefined> = ref(undefined)
   public loginError: Ref<string | undefined> = ref(undefined)
   public game: Game
+  public api: Api
 
   private onSocketLoginExec?: (logged: boolean) => void
-  public onSocketLogin (exec: (logged: boolean) => void) {
+  public onSocketLogin (exec: (logged: boolean) => void): void {
     this.onSocketLoginExec = exec
   }
 
@@ -50,9 +57,10 @@ class MSocket {
     })
 
     this.game = new Game(this.socket)
+    this.api = new Api(this)
   }
 
-  public reload () {
+  public reload (): void {
     this.logged.value = undefined
     this.socket.disconnect()
     this.constructor()
@@ -69,7 +77,15 @@ class MSocket {
     })
   }
 
-  public autoJoin () {
+  public autoJoinGame (): Promise<boolean> {
     return this.get<string, boolean>('game.autoJoin', '')
+  }
+
+  public joinGame (gameid: string): Promise<boolean> {
+    return this.get<string, boolean>('game.join', gameid)
+  }
+
+  public leaveGame (): Promise<boolean> {
+    return this.get<string, boolean>('game.leave', '')
   }
 }

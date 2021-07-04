@@ -28,7 +28,8 @@ app.use(auth)
 
 const gAuthOptions = {
   clientId: '460731705619-f1sf2c9mq0lhk0onoqt2hc4o8f22gn6t.apps.googleusercontent.com',
-  prompt: 'consent'
+  prompt: 'consent',
+  access_type: 'offline'
 }
 app.use(GAuth, gAuthOptions)
 
