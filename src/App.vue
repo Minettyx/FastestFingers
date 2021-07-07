@@ -1,4 +1,5 @@
 <template>
+  <ErrorToaster></ErrorToaster>
   <router-view :key="$route.fullPath" style="text-align: center;"
     v-if="($socket.logged.value === true && $route.path !== '/login') || ($socket.logged.value === false && $route.path === '/login')
   "/>
@@ -9,8 +10,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ErrorToaster from '@/components/ErrorMessage.vue'
+
 export default defineComponent({
   name: 'App',
+  components: {
+    ErrorToaster
+  },
   watch: {
     /** redirect to "/login" if not logged in and to "/" if visiting "/login" while logged in */
     '$socket.logged': {

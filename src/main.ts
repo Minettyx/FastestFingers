@@ -8,11 +8,11 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 
 /* my plugins */
-import functions from './plugins/functions'
-import viewport from './plugins/viewport'
-import darkmode from './plugins/darkmode'
-import socket from './plugins/socket'
-import auth from './plugins/auth'
+import functions from '@/plugins/functions'
+import viewport from '@/plugins/viewport'
+import darkmode from '@/plugins/darkmode'
+import socket from '@/api/socket'
+import auth from '@/plugins/auth'
 
 /* google auth */
 import GAuth from 'vue3-google-oauth2'

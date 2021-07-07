@@ -1,35 +1,8 @@
 import { App, ref, Ref } from 'vue'
 import { io } from 'socket.io-client'
-import Game from '../api/Game'
+import Game from '@/api/Game'
 import Api from '@/api/Api'
-
-export default {
-  install: (app: App<Element>): void => {
-    const mmm = new MSocket()
-    app.config.globalProperties.$socket = mmm
-    app.config.globalProperties.$api = mmm.api
-    app.config.globalProperties.$game = mmm.game
-  }
-}
-
-function getCookie (name: string): string | null {
-  const nameEQ = name + '='
-  const ca = document.cookie.split(';')
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i]
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length)
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
-  }
-  return null
-}
-
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $socket: MSocket
-    $api: Api
-    $game: Game
-  }
-}
+import { Utils } from '@/plugins/functions'
 
 export class MSocket {
   public socket
@@ -46,7 +19,7 @@ export class MSocket {
   constructor () {
     this.socket = io(process.env.VUE_APP_API_URL + '', {
       auth: {
-        token: getCookie('STOKEN') + ''
+        token: Utils.getCookie('STOKEN') + ''
       }
     })
 
@@ -87,5 +60,23 @@ export class MSocket {
 
   public leaveGame (): Promise<boolean> {
     return this.get<string, boolean>('game.leave', '')
+  }
+}
+
+export const $socket = new MSocket()
+
+export default {
+  install: (app: App<Element>): void => {
+    app.config.globalProperties.$socket = $socket
+    app.config.globalProperties.$api = $socket.api
+    app.config.globalProperties.$game = $socket.game
+  }
+}
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $socket: MSocket
+    $api: Api
+    $game: Game
   }
 }

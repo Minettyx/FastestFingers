@@ -1,5 +1,5 @@
-import { MSocket } from '@/plugins/socket'
-import { ApiProfile } from '@/types'
+import { MSocket } from '@/api/socket'
+import { ApiProfile, ApiPublicProfile, ApiTopWinsUser, ApiTopWordSpeed } from '@/types'
 
 export default class Api {
   private $socket: MSocket
@@ -14,7 +14,23 @@ export default class Api {
   // this.$socket.get<{limit: number, page?: number}, ApiTopWinsUser[]>('topWins', { limit: 10, page: 0 }).then(console.log)
   // this.$socket.get<{limit: number, page?: number}, ApiTopWordSpeed[]>('topWordSpeeds', { limit: 10, page: 0 }).then(console.log)
 
-  getProfile () {
+  getProfile (): Promise<ApiProfile> {
     return this.$socket.get<string, ApiProfile>('profile', '')
+  }
+
+  getPublicProfile (userid: string): Promise<ApiPublicProfile> {
+    return this.$socket.get<string, ApiPublicProfile>('publicProfile', userid)
+  }
+
+  setUsername (newusername: string): Promise<boolean> {
+    return this.$socket.get<string, boolean>('setUsername', newusername)
+  }
+
+  getTopWins (limit: number, page = 0): Promise<ApiTopWinsUser[]> {
+    return this.$socket.get<{limit: number, page?: number}, ApiTopWinsUser[]>('topWins', { limit, page })
+  }
+
+  getTopWordSpeed (limit: number, page = 0): Promise<ApiTopWordSpeed[]> {
+    return this.$socket.get<{limit: number, page?: number}, ApiTopWordSpeed[]>('topWordSpeeds', { limit, page })
   }
 }
