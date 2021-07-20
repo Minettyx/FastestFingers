@@ -1,3 +1,4 @@
+import MSocket from '@/api/socket'
 import { App } from 'vue'
 
 export default {
@@ -7,12 +8,13 @@ export default {
         async $logIn () {
           const authCode = await this.$gAuth.getAuthCode()
           this.$setCookie('STOKEN', authCode, 30)
-          this.$socket.reload()
+          MSocket.setup()
         },
         async $logOut () {
+          MSocket.socket.emit('logout')
           await this.$gAuth.signOut()
           this.$eraseCookie('STOKEN')
-          this.$socket.reload()
+          MSocket.setup()
         }
       }
     })

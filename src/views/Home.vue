@@ -2,12 +2,12 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <p>users: {{ $socket.game.users.value }}</p>
-      <p>streak: {{ $socket.game.streak.value }}</p>
-      <p>streakUser: {{ $socket.game.streakUser.value }}</p>
-      <p>question: {{ $socket.game.question.value }}</p>
-      <p>wordcount: {{ $socket.game.wordcount.value }}</p>
-      <p>waiting: {{ $socket.game.waiting.value }}</p>
+      <p>users: {{ $game.users.value }}</p>
+      <p>streak: {{ $game.streak.value }}</p>
+      <p>streakUser: {{ $game.streakUser.value }}</p>
+      <p>question: {{ $game.question.value }}</p>
+      <p>wordcount: {{ $game.wordcount.value }}</p>
+      <p>waiting: {{ $game.waiting.value }}</p>
     </div>
   </div>
   <br>
@@ -27,7 +27,7 @@
       </div>
     </div>
   </form>
-  <button type="submit" class="btn btn-primary" @click="$socket.autoJoinGame()">Auto Join</button>
+  <button type="submit" class="btn btn-primary" @click="$game.autoJoinGame()">Auto Join</button>
   <br>
   <button type="button" class="btn btn-secondary" @click="$logOut()">LogOut</button>
   <button type="button" class="btn btn-secondary" @click="darkmode = !darkmode">{{darkmode?'Light':'Dark'}} Theme</button>
@@ -36,6 +36,9 @@
 </template>
 
 <script lang="ts">
+import Api from '@/api/Api'
+import Game from '@/api/Game'
+import MSocket from '@/api/socket'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -47,15 +50,15 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.$socket.game.onChat((data) => {
+    Game.onChat.addEventListener((data) => {
       this.messages.push(data)
     })
 
-    this.$api.getProfile().then(console.log)
+    Api.getProfile().then(console.log)
   },
   methods: {
     sendMsg () {
-      this.$socket.socket.emit('game.chat', this.send)
+      MSocket.socket.emit('game.chat', this.send)
       this.send = ''
     }
   }

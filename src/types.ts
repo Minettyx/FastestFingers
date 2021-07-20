@@ -5,14 +5,14 @@ export class ApiProfile {
   email: string
   username: string
   wins: number
-  wk_points: number
+  wk_points: number // eslint-disable-line
 
   constructor (data: {
     _id?: string
     email: string
     username: string
     wins: number
-    wk_points: number
+    wk_points: number // eslint-disable-line
   }) {
     this._id = data._id
     this.email = data.email
@@ -26,13 +26,13 @@ export class ApiPublicProfile {
   _id?: string
   username: string
   wins: number
-  wk_points: number
+  wk_points: number // eslint-disable-line
 
   constructor (data: {
     _id?: string
     username: string
     wins: number
-    wk_points: number
+    wk_points: number // eslint-disable-line
   }) {
     this._id = data._id
     this.username = data.username

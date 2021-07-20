@@ -11,6 +11,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ErrorToaster from '@/components/ErrorMessage.vue'
+import MSocket from './api/socket'
 
 export default defineComponent({
   name: 'App',
@@ -21,9 +22,9 @@ export default defineComponent({
     /** redirect to "/login" if not logged in and to "/" if visiting "/login" while logged in */
     '$socket.logged': {
       handler () {
-        if (this.$socket.logged.value === true && this.$route.path === '/login') {
+        if (MSocket.logged.value === true && this.$route.path === '/login') {
           this.$router.push('/')
-        } else if (this.$socket.logged.value === false && this.$route.path !== '/login') {
+        } else if (MSocket.logged.value === false && this.$route.path !== '/login') {
           this.$router.push('/login')
         }
       },

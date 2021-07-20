@@ -1,33 +1,18 @@
 <template>
-  <div class="container" v-if="show" style="backgroud-color: red">
-    <h5>{{ error }}</h5>
-  </div>
+<div></div>
 </template>
 
 <script lang="ts">
+import MSocket from '@/api/socket'
 import { defineComponent } from 'vue'
 
-let hideTimeout: number | false
 export default defineComponent({
   name: 'ErrorMessage',
-  data () {
-    return {
-      error: '',
-      show: false
-    }
-  },
   mounted () {
-    this.$socket.socket.on('error', errorid => {
-      this.error = this.idToMessage(errorid)
-      this.show = true
-      if (hideTimeout) {
-        clearTimeout(hideTimeout)
-      }
-      hideTimeout = setTimeout(() => {
-        this.show = false
-        hideTimeout = false
-      }, 5000)
+    MSocket.onError.addEventListener(errorid => {
+      this.$toast.show(this.idToMessage(errorid), { type: 'error', duration: 3000 })
     })
+    console.log('NEW ERROR HANDLER')
   },
   methods: {
     idToMessage (errorId: string) {
