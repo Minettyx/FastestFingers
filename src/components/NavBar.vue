@@ -117,7 +117,7 @@
 
   <!-- Mobile Navbar -->
 
-  <nav class="bg-white dark:bg-gray-800 shadow fixed min-w-full md:hidden bottom-0">
+  <nav class="bg-white dark:bg-gray-800 shadow fixed min-w-full md:hidden bottom-0" v-show="!(windowHeight/windowWidth < 1.15 && windowHeight/windowWidth > 0.85)">
     <div class="max-w-none mx-auto px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center pl-12">
