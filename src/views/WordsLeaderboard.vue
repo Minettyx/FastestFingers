@@ -122,7 +122,6 @@ export default defineComponent({
       }
     },
     onScroll () {
-      console.log(window.scrollY, window.innerHeight, document.body.scrollHeight)
       if (window.scrollY + window.innerHeight > document.body.scrollHeight - 300) {
         this.load(this.page + 1)
       }
