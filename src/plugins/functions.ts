@@ -1,4 +1,22 @@
+import Listener from '@/classes/Listener'
 import { App } from 'vue'
+import humanizeDuration from 'humanize-duration'
+
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  languages: {
+    shortEn: {
+      y: () => 'y',
+      mo: () => 'mo',
+      w: () => 'w',
+      d: () => 'd',
+      h: () => 'h',
+      m: () => 'm',
+      s: () => 's',
+      ms: () => 'ms'
+    }
+  }
+})
 
 export class Utils {
   static timeSince (date: Date | string | number): string {
@@ -77,6 +95,12 @@ export class Utils {
   static eraseCookie (name: string): void {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
   }
+
+  static error = new Listener<{id?: string; message?: string; color?: string}>()
+
+  static humanize (inp: number): string {
+    return shortEnglishHumanizer(inp, { delimiter: ' ', units: ['y', 'mo', 'w', 'd', 'h', 'm', 's', 'ms'] })
+  }
 }
 
 export default {
@@ -86,6 +110,8 @@ export default {
     app.config.globalProperties.$setCookie = Utils.setCookie
     app.config.globalProperties.$getCookie = Utils.getCookie
     app.config.globalProperties.$eraseCookie = Utils.eraseCookie
+    app.config.globalProperties.$error = Utils.error
+    app.config.globalProperties.$humanize = Utils.humanize
   }
 }
 
@@ -95,6 +121,8 @@ declare module '@vue/runtime-core' {
     $setCookie: (name: string, value: string, days: number | false) => void
     $getCookie: (name: string) => string | null
     $eraseCookie: (name: string) => void
+    $error: Listener<{id?: string; message?: string; color?: string}>
+    $humanize: (inp: number) => string
     $gAuth: any // eslint-disable-line
     $toast: any // eslint-disable-line
   }

@@ -1,14 +1,14 @@
 // classes used to get a new object with only the properties we want as casting an object to a type or interface will not remove the unecessary properties
 
 export class ApiProfile {
-  _id?: string
+  _id: string
   email: string
   username: string
   wins: number
   wk_points: number // eslint-disable-line
 
   constructor (data: {
-    _id?: string
+    _id: string
     email: string
     username: string
     wins: number
@@ -38,22 +38,6 @@ export class ApiPublicProfile {
     this.username = data.username
     this.wins = data.wins
     this.wk_points = data.wk_points
-  }
-}
-
-export class ApiTopWinsUser {
-  _id?: string
-  username: string
-  wins: number
-
-  constructor (data: {
-    _id?: string
-    username: string
-    wins: number
-  }) {
-    this._id = data._id
-    this.username = data.username
-    this.wins = data.wins
   }
 }
 

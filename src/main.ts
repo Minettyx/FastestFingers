@@ -3,9 +3,8 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 
-/* Bootstrap */
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.js'
+/* Tailwind CSS */
+import './assets/styles/main.css'
 
 /* my plugins */
 import functions from '@/plugins/functions'

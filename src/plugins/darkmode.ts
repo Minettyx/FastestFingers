@@ -3,39 +3,47 @@ import {
   enable as enableDarkMode,
   disable as disableDarkMode
 } from 'darkreader'
+import Rav from '@/classes/Rav'
+import Listener from '@/classes/Listener'
+
+const dmevent = new Listener<boolean>()
+const gdarkmode = new Rav(localStorage.darkmode === 'true', (n) => {
+  dmevent.emit(n)
+
+  updateMode()
+})
+updateMode()
+
+function updateMode () {
+  localStorage.darkmode = gdarkmode.value ? 'true' : 'false'
+  if (gdarkmode.value) {
+    enableDarkMode({
+      brightness: 100,
+      contrast: 90,
+      sepia: 10
+    })
+  } else {
+    disableDarkMode()
+  }
+}
 
 export default {
   install: (app: App<Element>): void => {
     app.mixin({
       data () {
         return {
-          darkmode: localStorage.darkmode === 'true'
+          darkmode: gdarkmode.value
         }
+      },
+      created () {
+        dmevent.addEventListener((d) => {
+          this.darkmode = d
+        })
       },
       watch: {
         darkmode: {
           handler () {
-            localStorage.darkmode = this.darkmode ? 'true' : 'false'
-            this.updatedarkmode()
-          }
-        }
-      },
-      created () {
-        if (!this.$parent) {
-          this.updatedarkmode()
-        }
-      },
-      methods: {
-        /** update the actual style */
-        updatedarkmode () {
-          if (this.darkmode) {
-            enableDarkMode({
-              brightness: 100,
-              contrast: 90,
-              sepia: 10
-            })
-          } else {
-            disableDarkMode()
+            gdarkmode.value = this.darkmode
           }
         }
       }

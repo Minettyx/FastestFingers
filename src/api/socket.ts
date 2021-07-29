@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client'
 import Game from '@/api/Game'
 import { Utils } from '@/plugins/functions'
 import Listener from '@/classes/Listener'
+import Api from './Api'
 
 class MSocketClass {
   socket!: Socket
@@ -39,6 +40,9 @@ class MSocketClass {
       if (this.logged.value) {
         Game.setup()
       }
+      Api.getProfile().then(p => {
+        Api.USERID.value = p._id
+      })
     })
 
     this.socket.on('error', errorid => {

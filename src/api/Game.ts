@@ -11,7 +11,7 @@ class GameClass {
   }[]> = ref([])
 
   streak: Ref<number> = ref(0)
-  streakUser: Ref<string|undefined> = ref(undefined)
+  streakUser: Ref<string> = ref('')
   question: Ref<string> = ref('')
   wordcount: Ref<number> = ref(0)
   waiting: Ref<boolean> = ref(true)
@@ -26,8 +26,10 @@ class GameClass {
 
   setup (): void {
     // reset variables if not first time
+    this.id.value = ''
+    this.users.value = []
     this.streak.value = 0
-    this.streakUser.value = undefined
+    this.streakUser.value = ''
     this.question.value = ''
     this.wordcount.value = 0
     this.waiting.value = true
@@ -44,13 +46,27 @@ class GameClass {
     })
 
     MSocket.socket.on('game.update', (data: { id?: string, users?: { id: string, points: number, username: string }[], streak?: number, streakUser?: string, question?: string, wordcount?: number, waiting?: boolean }) => {
-      this.id.value = data.id || this.id.value
-      this.users.value = data.users || this.users.value
-      this.streak.value = data.streak || this.streak.value
-      this.streakUser.value = data.streakUser || this.streakUser.value
-      this.question.value = data.question || this.question.value
-      this.wordcount.value = data.wordcount || this.wordcount.value
-      this.waiting.value = data.waiting || this.waiting.value
+      if (data.id !== undefined) {
+        this.id.value = data.id
+      }
+      if (data.users !== undefined) {
+        this.users.value = data.users
+      }
+      if (data.streak !== undefined) {
+        this.streak.value = data.streak
+      }
+      if (data.streakUser !== undefined) {
+        this.streakUser.value = data.streakUser
+      }
+      if (data.question !== undefined) {
+        this.question.value = data.question
+      }
+      if (data.wordcount !== undefined) {
+        this.wordcount.value = data.wordcount
+      }
+      if (data.waiting !== undefined) {
+        this.waiting.value = data.waiting
+      }
     })
 
     MSocket.socket.on('game.won', (wonusers: { id: string; points: number; username: string }[]) => {
