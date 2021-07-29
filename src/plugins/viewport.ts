@@ -5,7 +5,9 @@ export default {
     app.mixin({
       data () {
         return {
-          viewport: 4
+          viewport: 4,
+          windowHeight: 0,
+          windowWidth: 0
         }
       },
       created () {
@@ -22,6 +24,9 @@ export default {
             window.innerWidth || 0
           )
           if (width < 576) { this.viewport = 0 } else if (width < 768) { this.viewport = 1 } else if (width < 992) { this.viewport = 2 } else if (width < 1200) { this.viewport = 3 } else { this.viewport = 4 }
+
+          this.windowHeight = window.innerHeight
+          this.windowWidth = window.innerWidth
         }
       }
     })
@@ -30,6 +35,8 @@ export default {
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    viewport: number
+    viewport: number,
+    windowHeight: number,
+    windowWidth: number
   }
 }

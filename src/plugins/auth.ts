@@ -1,3 +1,4 @@
+import MSocket from '@/api/socket'
 import { App } from 'vue'
 
 export default {
@@ -5,14 +6,15 @@ export default {
     app.mixin({
       methods: {
         async $logIn () {
-          const googleUser = await this.$gAuth.signIn()
-          this.$setCookie('STOKEN', googleUser.getAuthResponse().id_token, 7)
-          this.$socket.reload()
+          const authCode = await this.$gAuth.getAuthCode()
+          this.$setCookie('STOKEN', authCode, 30)
+          MSocket.setup()
         },
         async $logOut () {
+          MSocket.socket.emit('logout')
           await this.$gAuth.signOut()
           this.$eraseCookie('STOKEN')
-          this.$socket.reload()
+          MSocket.setup()
         }
       }
     })
