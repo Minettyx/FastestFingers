@@ -52,7 +52,7 @@
       </div>
     </div>
   </div>
-
+  <div class="h-6 md:hidden"></div>
 </div>
 </template>
 
