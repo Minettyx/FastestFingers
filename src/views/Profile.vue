@@ -1,6 +1,6 @@
 <template>
 <div>
-  <NavBar></NavBar>
+  <NavBar :hide='focused'></NavBar>
   <div class="container mx-auto" v-if="!loading">
     <p class="text-5xl p-6">{{username}}</p>
 
@@ -33,7 +33,7 @@
                   <input
                     v-model="newusername"
                     type="text"
-                    id="rounded-email"
+                    id="editusername"
                     class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent h-8"
                     :placeholder="username"
                   />
@@ -107,6 +107,7 @@
     </div>
 
   </div>
+  <div class="h-20 md:hidden"></div>
 </div>
 </template>
 
@@ -123,6 +124,8 @@ export default defineComponent({
   data () {
     return {
       loading: true,
+      focused: false,
+      focusedinterval: undefined as number | undefined,
 
       id: '',
       email: '',
@@ -146,6 +149,13 @@ export default defineComponent({
 
       this.newusername = this.username
     })
+
+    this.focusedinterval = setInterval(this.updateFocused, 100)
+  },
+  beforeUnmount () {
+    if (this.focusedinterval) {
+      clearInterval(this.focusedinterval)
+    }
   },
   methods: {
     editusername () {
@@ -163,6 +173,9 @@ export default defineComponent({
           this.username = this.newusername
         }
       })
+    },
+    updateFocused () {
+      this.focused = document.activeElement === document.getElementById('editusername')
     }
   }
 })

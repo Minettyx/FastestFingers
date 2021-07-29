@@ -2,8 +2,6 @@
   <router-view :key="$route.fullPath" style="text-align: center;"
     v-if="($socket.logged.value === true && $route.path !== '/login') || ($socket.logged.value === false && $route.path === '/login')
   "/>
-
-  <div class="h-16 md:hidden"></div>
 </template>
 
 <script lang="ts">

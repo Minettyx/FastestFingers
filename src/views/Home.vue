@@ -1,6 +1,6 @@
 <template>
 <div>
-  <NavBar></NavBar>
+  <NavBar :hide='focusedOnChat'></NavBar>
   <br>
   <button v-if="!$game.inGame.value" class="px-6 py-2  transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none" @click="() => {$game.autoJoinGame(); messages=[]}">
     Join Game
@@ -43,6 +43,7 @@
         <div class="flex">
           <form class="w-full" @submit.prevent="sendMsg()">
             <input
+              id="chatinput"
               v-model="send"
               type="text"
               class="rounded-l-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none"
@@ -86,6 +87,8 @@ export default defineComponent({
     return {
       chatboxheigth: '',
       heigthupdateInterval: false as number | false,
+      focusedOnChat: false,
+      focusedinterval: undefined as number | undefined,
 
       messages: [] as {username: string, text: string; userid: string; type?: string}[],
       send: '',
@@ -163,17 +166,22 @@ export default defineComponent({
       })
       this.scrollDown()
     })
+
+    this.focusedinterval = setInterval(this.updateFocusedOnChat, 100)
   },
   beforeUnmount () {
     if (this.heigthupdateInterval) {
       clearInterval(this.heigthupdateInterval)
+    }
+    if (this.focusedinterval) {
+      clearInterval(this.focusedinterval)
     }
   },
   methods: {
     calcHeight () {
       if (this.viewport <= 2) {
         // eslint-disable-next-line
-        const v = this.windowHeight - (this.chatbox?.getBoundingClientRect().top || 0) - 123
+        const v = this.windowHeight - (this.chatbox?.getBoundingClientRect().top || 0) - (this.focusedOnChat ? 70 : 123)
         this.chatboxheigth = v + 'px'
       } else {
         this.chatboxheigth = 'calc( 100vh - 180px )'
@@ -195,6 +203,9 @@ export default defineComponent({
           }, 10)
         }
       }
+    },
+    updateFocusedOnChat () {
+      this.focusedOnChat = document.activeElement === document.getElementById('chatinput')
     }
   }
 })
